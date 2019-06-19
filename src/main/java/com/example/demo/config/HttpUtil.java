@@ -29,7 +29,7 @@ public class HttpUtil {
         String attr = restTemplate.exchange(url, HttpMethod.POST, requestEntity,
                 String.class)
                 .getBody();
-        logger.info("解码返回的结果是：" + attr);
+        //logger.info("解码返回的结果是：" + attr);
         return attr;
     }
 

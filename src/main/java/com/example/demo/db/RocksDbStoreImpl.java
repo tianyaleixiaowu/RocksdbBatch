@@ -15,6 +15,7 @@ import java.util.Map;
 
 /**
  * rocksDB对于存储接口的实现
+ *
  * @author wuweifeng wrote on 2018/3/13.
  */
 @Component
@@ -42,7 +43,7 @@ public class RocksDbStoreImpl implements DbStore {
 
     private RocksDB getRocksDB(String key) {
         int code = key.hashCode() % 10;
-        
+
         return getRocksDB(code);
     }
 
@@ -125,6 +126,32 @@ public class RocksDbStoreImpl implements DbStore {
                 }
 
                 results.putAll(oneResult);
+            }
+
+            return results;
+        } catch (RocksDBException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public Map<String, String> multiGetFromOne(List<String> keys) {
+        try {
+            int code = keys.get(0).hashCode() % 10;
+
+            Map<String, String> results = new HashMap<>(keys.size());
+
+            List<byte[]> oneKeyList = new ArrayList<>();
+            for (String s : keys) {
+                oneKeyList.add(s.getBytes(Const.CHARSET));
+            }
+
+
+            Map<byte[], byte[]> valueMap = getRocksDB(code).multiGet(oneKeyList);
+
+            for (Map.Entry<byte[], byte[]> entry : valueMap.entrySet()) {
+                results.put(new String(entry.getKey()), new String(entry.getValue()));
             }
 
             return results;

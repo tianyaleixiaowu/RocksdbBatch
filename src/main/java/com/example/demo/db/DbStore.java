@@ -28,7 +28,9 @@ public interface DbStore {
     String get(String key);
 
     Map<String, String> multiGet(List<String> key);
-    
+
+
+    Map<String, String> multiGetFromOne(List<String> key);
     /**
      * remove by key
      *

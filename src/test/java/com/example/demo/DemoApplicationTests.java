@@ -10,6 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import javax.annotation.Resource;
 
@@ -34,16 +36,18 @@ public class DemoApplicationTests {
         //insertService.insert("a", "b");
         //insertService.insertAll();
 
-        //String content = "";
-        //for (long i = 13400000000L; i < 13400020000L; i++) {
-        //    content += CommonUtil.md5(i + "") + ",";
-        //}
-        //System.out.println("开始了");
-        //Long time = System.currentTimeMillis();
-        //MultiValueMap<String, String> valueMap = new LinkedMultiValueMap();
-        //valueMap.add("content", content);
-        //httpUtil.build("http://172.16.1.224:8080/batch", valueMap);
-        //System.out.println(System.currentTimeMillis() - time);
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (long i = 13400600000L; i < 13400610000L; i++) {
+            String md5 = CommonUtil.md5(i + "");
+            stringBuilder.append(md5).append(",");
+        }
+        System.out.println("开始了");
+        Long time = System.currentTimeMillis();
+        MultiValueMap<String, String> valueMap = new LinkedMultiValueMap();
+        valueMap.add("content", stringBuilder.toString());
+        httpUtil.build("http://172.16.1.224:8080/batch", valueMap);
+        System.out.println(System.currentTimeMillis() - time);
 
         //insertService.insert(134L);
         //insertService.insertAll();

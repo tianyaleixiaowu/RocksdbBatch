@@ -17,6 +17,8 @@ public class IndexController {
     private DbStore dbStore;
     @Resource
     private InsertService insertService;
+    @Resource
+    private FetchService fetchService;
 
     @RequestMapping("fetch")
     public Map<String, String> query(String content) {
@@ -33,19 +35,19 @@ public class IndexController {
         String[] array = content.split(",");
         List<String> list = Arrays.asList(array);
 
-        return dbStore.multiGet(list);
+        return fetchService.batch(list);
     }
 
     @RequestMapping("insert")
-    public Integer insert(long number) {
+    public String insert(long number) {
         insertService.insert(number);
 
-        return 1;
+        return "1";
     }
 
     @RequestMapping("insertAll")
-    public Integer insertAll() {
+    public String insertAll() {
         insertService.insertAll();
-        return 1;
+        return "1";
     }
 }
