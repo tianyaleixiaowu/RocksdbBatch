@@ -1,7 +1,14 @@
 spring:
   redis:
     host: ${REDIS_HOST:172.16.1.224}
-    port: ${REDIS_PORT:21666}
+    port: ${REDIS_PORT:21600}
     password: ${REDIS_PASSWORD:}
+    lettuce:
+      pool:
+        max-active: 32
+        max-idle: 8
+        min-idle: 0
 rock:
-  readOnly: ${ReadOnly:true}
+  readOnly: ${ReadOnly:false}
+thread:
+  count: ${ThreadCount:16}

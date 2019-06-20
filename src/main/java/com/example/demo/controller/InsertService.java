@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
-import com.example.demo.ImportToRocks;
-import com.example.demo.db.DbStore;
+import com.example.demo.redis.ImportToRedis;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,26 +18,30 @@ import java.util.concurrent.Executors;
  */
 @Service
 public class InsertService {
+    //@Resource
+    //private DbStore dbStore;
+    @Value("${thread.count}")
+    private Integer threadCount;
     @Resource
-    private DbStore dbStore;
+    private StringRedisTemplate stringRedisTemplate;
 
-    private ExecutorService executorService = Executors.newFixedThreadPool(64);
+    private ExecutorService executorService;
+
+
+    @PostConstruct
+    public void init() {
+        executorService = Executors.newFixedThreadPool(16);
+    }
 
     @SuppressWarnings("AlibabaThreadPoolCreation")
     public void insert(long number) {
         System.out.println("--------------------------------------当前号段" + number);
 
-        //每个号段一亿个数
-        int totalCount = 100000000;
-
-        //int totalCount = 1000000;
-        //每次每个线程写入1万个
-        int batchSize = 10000;
-
-        number = number * totalCount;
+        //每次每个线程写入10万个
+        int batchSize = 100000;
 
         //这一亿个数，分多少次写入
-        int loopCount = totalCount / batchSize;
+        int loopCount = 100000000 / batchSize;
 
         CountDownLatch countDownLatch = new CountDownLatch(loopCount);
         for (int i = 0; i < loopCount; i++) {
@@ -44,7 +50,7 @@ public class InsertService {
                 tempList.add(j + "");
             }
 
-            executorService.execute(new ImportToRocks(dbStore, tempList, countDownLatch));
+            executorService.execute(new ImportToRedis(stringRedisTemplate, tempList, countDownLatch));
         }
 
         try {
@@ -56,12 +62,14 @@ public class InsertService {
     }
 
     public void insertAll() {
-        //134L, 135L, 136L, 137L, 138L, 139L,147L, 148L, 150L, 151L, 152L, 157L, 158L, 159L, 165L, 172L, 178L, 182L,
-        // 183L,
-        //                184L, 187L, 188L, 198L,
-        //                130L, 131L, 132L, 145L, 146L, 155L, 156L, 166L, 171L, 175L, 176L, 185L, 186L, 
-        long[] array = {133L, 149L, 153L, 173L, 174L, 177L, 180L,
-                181L, 189L, 199L, 170L};
+        long[] array = {
+                13000000000L, 13100000000L, 13200000000L, 13300000000L, 13400000000L, 13500000000L,
+                13600000000L, 13700000000L, 13800000000L, 13900000000L, 14500000000L, 14600000000L,
+                14700000000L, 14800000000L, 14900000000L, 15000000000L, 15100000000L, 15200000000L,
+                15300000000L,  15500000000L, 15600000000L, 15700000000L, 15800000000L, 15900000000L,
+                16500000000L, 16600000000L, 17000000000L, 17100000000L, 17200000000L, 17300000000L,
+                17400000000L, 17500000000L, 17600000000L, 17700000000L, 17800000000L, 18600000000L,
+                18700000000L,  18800000000L, 18900000000L, 19800000000L, 19900000000L};
         CountDownLatch countDownLatch = new CountDownLatch(array.length);
         for (long num : array) {
             insert(num);

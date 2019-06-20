@@ -1,6 +1,4 @@
-package com.example.demo;
-
-import com.example.demo.db.DbStore;
+package com.example.demo.db;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;

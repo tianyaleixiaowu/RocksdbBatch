@@ -2,7 +2,6 @@ package com.example.demo.db;
 
 import org.rocksdb.RocksDB;
 import org.rocksdb.RocksDBException;
-import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -13,36 +12,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.example.demo.db.DbInitConfig.TOTAL_ROCKS;
+
 /**
  * rocksDB对于存储接口的实现
  *
  * @author wuweifeng wrote on 2018/3/13.
  */
-@Component
+//@Component
 public class RocksDbStoreImpl implements DbStore {
-    @Resource(name = "rocksDB0")
-    private RocksDB rocksDB0;
-    @Resource(name = "rocksDB1")
-    private RocksDB rocksDB1;
-    @Resource(name = "rocksDB2")
-    private RocksDB rocksDB2;
-    @Resource(name = "rocksDB3")
-    private RocksDB rocksDB3;
-    @Resource(name = "rocksDB4")
-    private RocksDB rocksDB4;
-    @Resource(name = "rocksDB5")
-    private RocksDB rocksDB5;
-    @Resource(name = "rocksDB6")
-    private RocksDB rocksDB6;
-    @Resource(name = "rocksDB7")
-    private RocksDB rocksDB7;
-    @Resource(name = "rocksDB8")
-    private RocksDB rocksDB8;
-    @Resource(name = "rocksDB9")
-    private RocksDB rocksDB9;
+
+    @Resource
+    private List<RocksDB> rocksDBS;
 
     private RocksDB getRocksDB(String key) {
-        int code = key.hashCode() % 10;
+        int code = key.hashCode() % TOTAL_ROCKS;
 
         return getRocksDB(code);
     }
@@ -51,28 +35,7 @@ public class RocksDbStoreImpl implements DbStore {
         if (code < 0) {
             code = -code;
         }
-        if (code == 0) {
-            return rocksDB0;
-        } else if (code == 1) {
-            return rocksDB1;
-        } else if (code == 2) {
-            return rocksDB2;
-        } else if (code == 3) {
-            return rocksDB3;
-        } else if (code == 4) {
-            return rocksDB4;
-        } else if (code == 5) {
-            return rocksDB5;
-        } else if (code == 6) {
-            return rocksDB6;
-        } else if (code == 7) {
-            return rocksDB7;
-        } else if (code == 8) {
-            return rocksDB8;
-        } else if (code == 9) {
-            return rocksDB9;
-        }
-        return null;
+        return rocksDBS.get(code);
     }
 
     @Override
@@ -146,7 +109,6 @@ public class RocksDbStoreImpl implements DbStore {
             for (String s : keys) {
                 oneKeyList.add(s.getBytes(Const.CHARSET));
             }
-
 
             Map<byte[], byte[]> valueMap = getRocksDB(code).multiGet(oneKeyList);
 

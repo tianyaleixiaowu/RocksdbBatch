@@ -1,6 +1,6 @@
-package com.example.demo;
+package com.example.demo.db;
 
-import com.example.demo.db.DbStore;
+import com.example.demo.CommonUtil;
 
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
