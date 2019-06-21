@@ -28,19 +28,24 @@ public class DemoApplicationTests {
         //insertService.insert("a", "b");
         //insertService.insertAll();
 
+        int batchSize = 50000;
 
+
+        //Long time = System.currentTimeMillis();
+        //
         //StringBuilder stringBuilder = new StringBuilder();
-        //for (long i = 13400600000L; i < 13400610000L; i++) {
+        //
+        //ExecutorService executorService = Executors.newFixedThreadPool(8);
+        //for (long i = 13100100000L; i < 13100150000L; i++) {
         //    String md5 = CommonUtil.md5(i + "");
         //    stringBuilder.append(md5).append(",");
         //}
         //System.out.println("开始了");
-        //Long time = System.currentTimeMillis();
         //MultiValueMap<String, String> valueMap = new LinkedMultiValueMap();
         //valueMap.add("content", stringBuilder.toString());
         //httpUtil.build("http://172.16.1.224:8080/fetch", valueMap);
+        //
         //System.out.println(System.currentTimeMillis() - time);
-
         //insertService.insert(134L);
         //insertService.insertAll();
 

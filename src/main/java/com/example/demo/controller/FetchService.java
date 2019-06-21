@@ -14,8 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * @author wuweifeng wrote on 2019/6/19.
@@ -26,8 +24,6 @@ public class FetchService {
     //private DbStore dbStore;
     @Resource
     private StringRedisTemplate stringRedisTemplate;
-
-    private ExecutorService executorService = Executors.newFixedThreadPool(16);
 
     public Map<String, String> batch(List<String> list) {
         ConcurrentHashMap<String, String> map = new ConcurrentHashMap<>(list.size());
@@ -78,6 +74,7 @@ public class FetchService {
                     String realKey = KeyTool.newKey(md5);
 
                     stringRedisTemplate.opsForHash().get(hashKey, realKey);
+
                 }
                 return null;
             }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.zip.CRC32;
 
 /**
  * @author wuweifeng wrote on 2019/6/20.
@@ -17,17 +18,14 @@ public class KeyTool {
      * 计算redis的hash key
      */
     public static String hashKey(String key) {
-        int code = key.hashCode() % KEY_COUNT;
-        if (code < 0) {
-            code = -code;
-        }
-
-        return "" + code;
+        CRC32 crc32 = new CRC32();
+        crc32.update(key.getBytes());
+        return crc32.getValue() % KEY_COUNT + "";
     }
 
     public static String newKey(String key) {
-        //return key.substring(0, 8);
-        return key.hashCode() + "";
+        //return key.hashCode() + "";
+        return BKDRHash(key) + "";
     }
 
     /**
@@ -43,16 +41,45 @@ public class KeyTool {
         return (hash & 0x7FFFFFFF);
     }
 
-    public static void main(String[] args) {
-        System.out.println(KEY_COUNT);
+    public static byte[] getBucketId(String md5, Integer bit) {
+        byte[] md = md5.getBytes();
+        // 因为一个字节中只有7位能够表示成单字符
+        byte[] r = new byte[(bit - 1) / 7 + 1];
 
-        System.out.println(CommonUtil.md5("1").hashCode());
-
-        Set<Integer> strings = new HashSet<>();
-        for (int i = 0; i < 1000000; i++) {
-            strings.add(BKDRHash(CommonUtil.md5(i + "")));
+        int a = (int) Math.pow(2, bit % 7) - 2;
+        md[r.length - 1] = (byte) (md[r.length - 1] & a);
+        System.arraycopy(md, 0, r, 0, r.length);
+        for (int i = 0; i < r.length; i++) {
+            if (r[i] < 0) {
+                r[i] &= 127;
+            }
         }
-        System.out.println(strings.iterator().next());
+        return r;
+    }
+
+    public static void main(String[] args) {
+        //8589934592
+        //System.out.println(2L<<32);
+        System.out.println(KEY_COUNT);
+        Set<String> strings = new HashSet<>();
+
+        //for (long i = 13010000000L; i < 13020000000L; i++) {
+        //    strings.add(hashKey(CommonUtil.md5(i + "")));
+        //}
+
+        System.out.println(strings.size());
+
+        System.out.println(new String(getBucketId(CommonUtil.md5("13100000001"), 25)));
+        System.out.println(hashKey(CommonUtil.md5("15528964253")));
+
+        System.out.println(newKey(CommonUtil.md5("13100000001")));
+        System.out.println(newKey(CommonUtil.md5("15528964253")));
+
+
+        //for (int i = 0; i < 100000; i++) {
+        //   String hashKey = hashKey(CommonUtil.md5(i + ""));
+        //    System.out.println(hashKey);
+        //}
         //System.out.println(KEY_COUNT);
         List<String> list = new ArrayList<>();
 

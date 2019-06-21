@@ -30,7 +30,7 @@ public class InsertService {
 
     @PostConstruct
     public void init() {
-        executorService = Executors.newFixedThreadPool(16);
+        executorService = Executors.newFixedThreadPool(8);
     }
 
     @SuppressWarnings("AlibabaThreadPoolCreation")
@@ -62,8 +62,9 @@ public class InsertService {
     }
 
     public void insertAll() {
+        // 13000000000L, 13100000000L, 13200000000L, 13300000000L, 
         long[] array = {
-                13000000000L, 13100000000L, 13200000000L, 13300000000L, 13400000000L, 13500000000L,
+               13400000000L, 13500000000L,
                 13600000000L, 13700000000L, 13800000000L, 13900000000L, 14500000000L, 14600000000L,
                 14700000000L, 14800000000L, 14900000000L, 15000000000L, 15100000000L, 15200000000L,
                 15300000000L,  15500000000L, 15600000000L, 15700000000L, 15800000000L, 15900000000L,
