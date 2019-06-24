@@ -12,7 +12,7 @@ import java.util.zip.CRC32;
  * @author wuweifeng wrote on 2019/6/20.
  */
 public class KeyTool {
-    public static int KEY_COUNT = 2<<25;
+    public static int KEY_COUNT = 2<<24;
 
     /**
      * 计算redis的hash key
@@ -59,7 +59,6 @@ public class KeyTool {
 
     public static void main(String[] args) {
         //8589934592
-        //System.out.println(2L<<32);
         System.out.println(KEY_COUNT);
         Set<String> strings = new HashSet<>();
 
@@ -69,11 +68,11 @@ public class KeyTool {
 
         System.out.println(strings.size());
 
-        System.out.println(new String(getBucketId(CommonUtil.md5("13100000001"), 25)));
+        System.out.println(hashKey(CommonUtil.md5("13100000001")));
         System.out.println(hashKey(CommonUtil.md5("15528964253")));
 
-        System.out.println(newKey(CommonUtil.md5("13100000001")));
-        System.out.println(newKey(CommonUtil.md5("15528964253")));
+        System.out.println(BKDRHash(CommonUtil.md5("13100000001")));
+        System.out.println(BKDRHash(CommonUtil.md5("15528964253")));
 
 
         //for (int i = 0; i < 100000; i++) {

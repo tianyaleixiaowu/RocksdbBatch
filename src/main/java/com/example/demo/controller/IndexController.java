@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author wuweifeng wrote on 2019/6/17.
@@ -28,7 +27,7 @@ public class IndexController {
     private HttpUtil httpUtil;
 
     @RequestMapping("fetch")
-    public Map<String, String> fetch(String content) {
+    public Object fetch(String content) {
         String[] array = content.split(",");
         List<String> list = Arrays.asList(array);
 
@@ -36,7 +35,7 @@ public class IndexController {
     }
 
     @RequestMapping("batch")
-    public Map<String, String> batch(String content) {
+    public Object batch(String content) {
         String[] array = content.split(",");
         List<String> list = Arrays.asList(array);
 

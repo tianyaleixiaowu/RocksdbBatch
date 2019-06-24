@@ -9,10 +9,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -54,7 +51,7 @@ public class FetchService {
             }
 
             List<Object> phones = fromRedis(list);
-            total.add(phones);
+            total.addAll(phones);
         }
 
         for (int i = 0; i < total.size(); i++) {
