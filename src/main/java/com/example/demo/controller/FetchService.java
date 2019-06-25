@@ -55,7 +55,9 @@ public class FetchService {
         }
 
         for (int i = 0; i < total.size(); i++) {
-            totalMap.put(keys.get(i), total.get(i).toString());
+            if (total.get(i) != null) {
+                totalMap.put(keys.get(i), total.get(i).toString());
+            }
         }
         return totalMap;
     }

@@ -35,8 +35,7 @@ public class DemoApplicationTests {
         //
         //StringBuilder stringBuilder = new StringBuilder();
         //
-        //ExecutorService executorService = Executors.newFixedThreadPool(8);
-        //for (long i = 13100100000L; i < 13100150000L; i++) {
+        //for (long i = 13100300000L; i < 13100305000L; i++) {
         //    String md5 = CommonUtil.md5(i + "");
         //    stringBuilder.append(md5).append(",");
         //}
