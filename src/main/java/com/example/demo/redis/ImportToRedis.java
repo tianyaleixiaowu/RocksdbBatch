@@ -25,20 +25,6 @@ public class ImportToRedis implements Runnable {
         Long time = System.currentTimeMillis();
         System.out.println("进入线程");
 
-        //最多1万个key
-        //Map<String, Map<String, String>> map = new HashMap<>(KeyTool.KEY_COUNT);
-        //for (String phone : list) {
-        //    String md5 = CommonUtil.md5(phone);
-        //    //hash的key
-        //    String hashKey = KeyTool.hashKey(md5);
-        //    //在hash里面的key
-        //    String realKey = KeyTool.newKey(md5);
-        //    if (map.get(hashKey) == null) {
-        //        Map<String, String> inMap = new HashMap<>();
-        //        map.put(hashKey, inMap);
-        //    }
-        //    map.get(hashKey).put(realKey, phone);
-        //}
 
         stringRedisTemplate.executePipelined(new SessionCallback<Object>() {
             @Override

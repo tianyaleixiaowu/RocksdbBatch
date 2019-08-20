@@ -2,6 +2,7 @@ package com.example.demo.db;
 
 import org.rocksdb.RocksDB;
 import org.rocksdb.RocksDBException;
+import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -12,36 +13,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.example.demo.db.DbInitConfig.TOTAL_ROCKS;
 
 /**
  * rocksDB对于存储接口的实现
  *
  * @author wuweifeng wrote on 2018/3/13.
  */
-//@Component
+@Component
 public class RocksDbStoreImpl implements DbStore {
 
     @Resource
-    private List<RocksDB> rocksDBS;
-
-    private RocksDB getRocksDB(String key) {
-        int code = key.hashCode() % TOTAL_ROCKS;
-
-        return getRocksDB(code);
-    }
-
-    private RocksDB getRocksDB(int code) {
-        if (code < 0) {
-            code = -code;
-        }
-        return rocksDBS.get(code);
-    }
+    private RocksDB rocksDB;
 
     @Override
     public void put(String key, String value) {
         try {
-            RocksDB rocksDB = getRocksDB(key);
             rocksDB.put(key.getBytes(Const.CHARSET), value.getBytes(Const.CHARSET));
         } catch (RocksDBException | UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -51,7 +37,7 @@ public class RocksDbStoreImpl implements DbStore {
     @Override
     public String get(String key) {
         try {
-            byte[] bytes = getRocksDB(key).get(key.getBytes(Const.CHARSET));
+            byte[] bytes = rocksDB.get(key.getBytes(Const.CHARSET));
             if (bytes != null) {
                 return new String(bytes, Const.CHARSET);
             }
@@ -81,7 +67,7 @@ public class RocksDbStoreImpl implements DbStore {
                     oneKeyList.add(s.getBytes(Const.CHARSET));
                 }
 
-                Map<byte[], byte[]> valueMap = getRocksDB(key).multiGet(oneKeyList);
+                Map<byte[], byte[]> valueMap = rocksDB.multiGet(oneKeyList);
 
                 Map<String, String> oneResult = new HashMap<>(oneList.size());
                 for (Map.Entry<byte[], byte[]> entry : valueMap.entrySet()) {
@@ -101,21 +87,16 @@ public class RocksDbStoreImpl implements DbStore {
     @Override
     public Map<String, String> multiGetFromOne(List<String> keys) {
         try {
-            int code = keys.get(0).hashCode() % 10;
-
             Map<String, String> results = new HashMap<>(keys.size());
-
             List<byte[]> oneKeyList = new ArrayList<>();
             for (String s : keys) {
                 oneKeyList.add(s.getBytes(Const.CHARSET));
             }
-
-            Map<byte[], byte[]> valueMap = getRocksDB(code).multiGet(oneKeyList);
+            Map<byte[], byte[]> valueMap = rocksDB.multiGet(oneKeyList);
 
             for (Map.Entry<byte[], byte[]> entry : valueMap.entrySet()) {
                 results.put(new String(entry.getKey()), new String(entry.getValue()));
             }
-
             return results;
         } catch (RocksDBException | UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -126,7 +107,7 @@ public class RocksDbStoreImpl implements DbStore {
     @Override
     public void remove(String key) {
         try {
-            getRocksDB(key).delete(getRocksDB(key).get(key.getBytes(Const.CHARSET)));
+            rocksDB.delete(rocksDB.get(key.getBytes(Const.CHARSET)));
         } catch (RocksDBException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }

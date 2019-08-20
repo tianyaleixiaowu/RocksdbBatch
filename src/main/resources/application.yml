@@ -8,7 +8,11 @@ spring:
         max-active: 16
         max-idle: 8
         min-idle: 0
-rock:
-  readOnly: ${ReadOnly:false}
 thread:
   count: ${ThreadCount:16}
+###############################---阿里云---##############################
+aliyun:
+  endpoint: https://oss-cn-beijing.aliyuncs.com/
+  accessKeyId: LTAIUEAyF5F1rtjD
+  accessKeySecret: 6E4HR2AI8Bwd9DlfcjcwjksjFfpkzD
+  bucketName: dmp-phone-md5

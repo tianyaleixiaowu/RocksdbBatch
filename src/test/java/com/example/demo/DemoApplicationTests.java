@@ -1,6 +1,8 @@
 package com.example.demo;
 
+import com.aliyun.oss.OSS;
 import com.example.demo.config.HttpUtil;
+import com.example.demo.config.OssUtil;
 import com.example.demo.controller.InsertService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,15 +24,18 @@ public class DemoApplicationTests {
     private InsertService insertService;
     @Resource
     private HttpUtil httpUtil;
+    @Resource
+    private OssUtil ossUtil;
+    @Resource
+    private OSS oss;
 
     @Test
     public void contextLoads() throws Exception {
         //insertService.insert("a", "b");
         //insertService.insertAll();
-
-        int batchSize = 50000;
-
-
+        // ossObject包含文件所在的存储空间名称、文件名称、文件元信息以及一个输入流。
+        //ossUtil.upload("2019-08-20/a.txt", "/Users/wuwf/project/dmp/authnacos/a");
+        //String s = ossUtil.list().iterator().next();
         //Long time = System.currentTimeMillis();
         //
         //StringBuilder stringBuilder = new StringBuilder();

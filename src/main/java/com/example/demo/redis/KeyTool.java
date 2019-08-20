@@ -2,9 +2,7 @@ package com.example.demo.redis;
 
 import com.example.demo.CommonUtil;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.zip.CRC32;
 
@@ -24,7 +22,6 @@ public class KeyTool {
     }
 
     public static String newKey(String key) {
-        //return key.hashCode() + "";
         return BKDRHash(key) + "";
     }
 
@@ -73,32 +70,5 @@ public class KeyTool {
 
         System.out.println(BKDRHash(CommonUtil.md5("13100000001")));
         System.out.println(BKDRHash(CommonUtil.md5("15528964253")));
-
-
-        //for (int i = 0; i < 100000; i++) {
-        //   String hashKey = hashKey(CommonUtil.md5(i + ""));
-        //    System.out.println(hashKey);
-        //}
-        //System.out.println(KEY_COUNT);
-        List<String> list = new ArrayList<>();
-
-        //for (int i = 0; i < 10000; i++) {
-        //    strings.add(newKey(CommonUtil.md5(i + "")));
-        //}
-        //System.out.println(strings.size());
-        //Map<String, Map<String, String>> map = new HashMap<>();
-        //for (String phone : list) {
-        //    String md5 = CommonUtil.md5(phone);
-        //    //hash的key
-        //    String hashKey = KeyTool.hashKey(md5);
-        //    //在hash里面的key
-        //    String realKey = KeyTool.newKey(md5);
-        //    if (map.get(hashKey) == null) {
-        //        Map<String, String> inMap = new HashMap<>();
-        //        map.put(hashKey, inMap);
-        //    }
-        //    map.get(hashKey).put(realKey, phone);
-        //}
-        //System.out.println();
     }
 }

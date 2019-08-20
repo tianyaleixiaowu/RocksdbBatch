@@ -17,8 +17,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Service
 public class FetchService {
-    //@Resource
-    //private DbStore dbStore;
     @Resource
     private StringRedisTemplate stringRedisTemplate;
 
