@@ -51,7 +51,10 @@ public class OssUtil {
             if (line == null) {
                 break;
             }
-            line = line.toLowerCase();
+            if (line.length() < 32) {
+                continue;
+            }
+            line = line.toLowerCase().trim();
             Object phone = phone(line.substring(0, 32));
             if (phone != null) {
                 out.write(phone.toString() + line.substring(32));

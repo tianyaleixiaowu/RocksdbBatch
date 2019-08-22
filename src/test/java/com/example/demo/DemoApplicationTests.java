@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 
@@ -28,9 +29,12 @@ public class DemoApplicationTests {
     private OssUtil ossUtil;
     @Resource
     private OSS oss;
+    @Resource
+    private RestTemplate restTemplate;
 
     @Test
     public void contextLoads() throws Exception {
+        //restTemplate.getForObject("http://core.maimenggroup.com/zuuldmp/core/model/.complete?id=1", String.class);
         //insertService.insert("a", "b");
         //insertService.insertAll();
         // ossObject包含文件所在的存储空间名称、文件名称、文件元信息以及一个输入流。
